@@ -23,18 +23,21 @@ end
 #ROUTES---------------------------------------------------------------------------------
 get '/recipes' do
   @title = "Find your favorite recipe!"
-  recipe_query = "SELECT recipes.id,recipes.instructions,recipes.description,
-                          ingredients.id, ingredients.name
-                  FROM recipes
-                      JOIN ingredients ON ingredients.recipe_id = recipes.id
-                  "
 
-
+  #pulling in data from recipes database------------------------------------------------
+  recipe_query = "SELECT name AS recipe, id, instructions, description
+                  FROM recipes ORDER BY recipes.name
+                  LIMIT 10"
   @recipes = db_connection do |conn|
                 conn.exec(recipe_query)
               end
 
-              #binding.pry
+  #pulling in data from ingredients database---------------------------------------------
+  ingredients_query = "SELECT * FROM ingredients"
+  @ingredients = db_connection do |conn|
+                    conn.exec(ingredients_query)
+                  end
+
   erb :index
 end
 

@@ -1,10 +1,19 @@
+<h3>Ingredients</h3>
+<% @ingredients.each do |ingredient| %>
+<%= ingredient["name"] %><br>
+<% end %>
 
-  <% @ingredients[0].each do |key,value| %>
 
-    <h3><%= key.capitalize %></h3>
-    <p><%= value %></p>
+<% @description_instructions[0].each do |key,value| %>
+  <% if key == "recipe" || key == "id" %>
+      <% next %>
+  <% end %>
 
-  <%end %>
+  <h3><%= key.capitalize %></h3>
+  <p><%= value %></p>
+<%end %>
+
+
 
 
   </body>

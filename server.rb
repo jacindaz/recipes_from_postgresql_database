@@ -39,15 +39,24 @@ end
 get '/recipes/:id' do
 
   @id = params[:id]
-  #pulling in data for a particular recipe---------------------------------------------
-  ingredients_query = "SELECT name AS recipe, id, description,
+  #pulling in data for 1 recipe's description and instructions-----------------------------
+  descrip_instruc_query = "SELECT name AS recipe, id, description,
                               recipes.instructions
                         FROM recipes
-                        WHERE recipes.id = $1"
-  @ingredients = db_connection do |conn|
-                    conn.exec_params(ingredients_query, [@id])
+                        WHERE id = $1"
+  @description_instructions = db_connection do |conn|
+                    conn.exec_params(descrip_instruc_query, [@id])
                   end
-  @title = "#{@ingredients[0]["recipe"]} Recipe"
+
+  #pulling in data for 1 recipe's ingredients----------------------------------------------
+  ingredients_query = "SELECT id, name, recipe_id FROM ingredients
+                        WHERE recipe_id = $1"
+
+  @ingredients = db_connection do |conn|
+                  conn.exec_params(ingredients_query, [@id])
+                end
+
+  @title = "#{@description_instructions[0]["recipe"]} Recipe"
   erb :show
 end
 
@@ -55,3 +64,17 @@ end
 get '/' do
   redirect '/recipes'
 end
+
+
+
+
+
+
+
+
+
+
+
+
+
+

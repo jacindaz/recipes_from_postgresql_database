@@ -17,8 +17,15 @@ def db_connection
   end
 end
 
-
-
+def split_value(hash, target_key)
+  array = []
+  hash.each do |key, value|
+    if key == target_key
+      array = value.split(". ")
+    end
+  end
+  return array
+end
 
 #ROUTES---------------------------------------------------------------------------------
 get '/recipes' do
@@ -55,6 +62,8 @@ get '/recipes/:id' do
   @ingredients = db_connection do |conn|
                   conn.exec_params(ingredients_query, [@id])
                 end
+  @instructions = split_value(@description_instructions[0], "instructions")
+
 
   @title = "#{@description_instructions[0]["recipe"]} Recipe"
   erb :show

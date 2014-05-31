@@ -11,15 +11,24 @@
   <% end %>
 <% end %>
 
+
 <% @recipes.each do |recipe| %>
   <tr>
-  <% recipe.each do |key,value| %>
-    <% if (key == "description") && (value != nil) %>
-      <td><%= value[0, 100] %>...</td>
-    <% elsif key == "recipe" %>
-      <td><%= value %></td>
-    <% end %>
-  <% end %>
+
+    <% if recipe["description"] == nil %>
+        <% next %>
+    <% else %>
+
+          <% recipe.each do |key,value| %>
+            <% if (key == "description") && (value != nil) %>
+              <td><%= value[0, 100] %>...</td>
+            <% elsif key == "recipe" %>
+              <td><%= value %></td>
+            <% end %>
+          <% end %>
+
+      <% end %>
+
   </tr>
 <% end %>
 

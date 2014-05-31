@@ -1,4 +1,11 @@
-<p>TBD</p>
+
+  <% @ingredients[0].each do |key,value| %>
+
+    <h3><%= key.capitalize %></h3>
+    <p><%= value %></p>
+
+  <%end %>
+
 
   </body>
 </html>

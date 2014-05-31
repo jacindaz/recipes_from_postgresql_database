@@ -23,7 +23,11 @@
             <% if (key == "description") && (value != nil) %>
               <td><%= value[0, 100] %>...</td>
             <% elsif key == "recipe" %>
-              <td><%= value %></td>
+              <td>
+                <a href="/recipes/<%= recipe["id"] %>">
+                  <%= value %>
+                </a>
+              </td>
             <% end %>
           <% end %>
 

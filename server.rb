@@ -24,6 +24,7 @@ end
 get '/recipes' do
   @title = "Find your favorite recipe!"
 
+
   #pulling in data from recipes database------------------------------------------------
   recipe_query = "SELECT name AS recipe, id, instructions, description
                   FROM recipes ORDER BY recipes.name
@@ -31,15 +32,25 @@ get '/recipes' do
   @recipes = db_connection do |conn|
                 conn.exec(recipe_query)
               end
-
-  #pulling in data from ingredients database---------------------------------------------
-  ingredients_query = "SELECT * FROM ingredients"
-  @ingredients = db_connection do |conn|
-                    conn.exec(ingredients_query)
-                  end
-
   erb :index
 end
+
+
+get '/recipes/:id' do
+
+  @id = params[:id]
+  #pulling in data for a particular recipe---------------------------------------------
+  ingredients_query = "SELECT name AS recipe, id, description,
+                              recipes.instructions
+                        FROM recipes
+                        WHERE recipes.id = $1"
+  @ingredients = db_connection do |conn|
+                    conn.exec_params(ingredients_query, [@id])
+                  end
+  @title = "#{@ingredients[0]["recipe"]} Recipe"
+  erb :show
+end
+
 
 get '/' do
   redirect '/recipes'

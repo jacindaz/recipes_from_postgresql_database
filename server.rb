@@ -6,7 +6,6 @@ require 'net/http'
 require 'uri'
 require 'pg'
 
-require_relative "test.rb"
 
 
 #METHODS---------------------------------------------------------------------------------
@@ -38,16 +37,51 @@ def cleaned_up(array)
   return new_array
 end
 
+def split_instruction_steps(array)
+
+  array.each do |sentence|
+    sentence.strip!
+  end
+  new_array = array
+
+  array_of_hashes = []
+  nested_hash = {}
+  nested_hash["1"] = nil
+  index = 1
+  new_hash_value = nil
+  new_array.each do |sentence|
+    if sentence[0].to_i == 0  #if does not begin with a number, update hash
+      current_hash_value = nested_hash[index.to_s]
+      new_hash_value = "#{current_hash_value} #{sentence}."
+      nested_hash[index.to_s] = new_hash_value
+    else  #if does begin with a number
+      if sentence[0].to_i != 0
+        sentence = sentence[2..-1]
+      end
+      array_of_hashes << nested_hash
+      nested_hash = {}
+      index += 1
+      current_hash_value = nested_hash[index.to_s]
+      new_hash_value = "#{current_hash_value} #{sentence}."
+      nested_hash[index.to_s] = new_hash_value
+    end
+  end
+  array_of_hashes << nested_hash
+  return array_of_hashes
+end
+
 
 #ROUTES---------------------------------------------------------------------------------
 get '/recipes' do
   @title = "Find your favorite recipe!"
+  #@num_recipes = params[:num_recipes]
+
 
 
   #pulling in data from recipes database------------------------------------------------
   recipe_query = "SELECT name AS recipe, id, instructions, description
                   FROM recipes ORDER BY recipes.name
-                  LIMIT 20"
+                  LIMIT 100"
   @recipes = db_connection do |conn|
                 conn.exec(recipe_query)
               end

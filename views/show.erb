@@ -3,25 +3,19 @@
 <%= ingredient["name"] %><br>
 <% end %>
 
-
+<h3>Description</h3>
 <% @description_instructions[0].each do |key,value| %>
-  <% if key == "recipe" || key == "id" %>
-      <% next %>
+  <% if key == "description" %>
+      <%= value %>
   <% end %>
-
-  <h3><%= key.capitalize %></h3>
-    <% if key == "instructions" %>
-      <ul>
-          <% @instructions_array.each do |line| %>
-            <li><%= line %></li>
-          <% end %>
-      </ul>
-    <% else %>
-      <p><%= value %></p>
-    <% end %>
 <%end %>
 
+<h3>Instructions</h3>
 
+<% @instructions_cleaned_up.each do |hash| %>
+  <%= hash %>
+  <br><br>
+<% end %>
 
 
   </body>

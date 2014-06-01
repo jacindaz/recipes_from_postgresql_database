@@ -4,8 +4,10 @@ test_array = ["\n\t\t\t\t\t\t\t\t\t\tMethod\n\t\t\t\t\t\t\t\t\t\t1 Before starti
 
 
 def extract_step_one(string)
+  #binding.pry
   new_string = string.split("1")
-  new_string = new_string[1]
+  #new_string = new_string[1]
+  #binding.pry
   remove_trailing_spaces = new_string.strip
   return remove_trailing_spaces
 end
@@ -23,29 +25,38 @@ def split_instruction_steps(array)
 
   new_array = array
   #strips 1st sentence to remove word "Method"
-  first_sentence = extract_step_one(new_array[0])
-  new_array[0] = first_sentence
+  #first_sentence = extract_step_one(new_array[0])
+  #new_array[0] = first_sentence
 
-  array_of_arrays = []
-  nested_array = []
+  array_of_hashes = []
+  nested_hash = {}
+  nested_hash["1"] = nil
+  index = 1
+  new_hash_value = nil
   new_array.each do |sentence|
-    if sentence[0].to_i == 0
-      nested_array << sentence
-    else
-      array_of_arrays << nested_array
-      nested_array = []
-      nested_array << sentence
-
+    if sentence[0].to_i == 0  #if does not begin with a number, update hash
+      current_hash_value = nested_hash[index.to_s]
+      new_hash_value = "#{current_hash_value}. #{sentence}"
+      nested_hash[index.to_s] = new_hash_value
+    else  #if does begin with a number
+      array_of_hashes << nested_hash
+      nested_hash = {}
+      index += 1
+      current_hash_value = nested_hash[index.to_s]
+      new_hash_value = "#{current_hash_value}. #{sentence}."
+      nested_hash[index.to_s] = new_hash_value
       #binding.pry
     end
   end
+  array_of_hashes << nested_hash
 
-  puts "#{array_of_arrays}"
-  puts nil
-  puts "Length: #{array_of_arrays.length}"
+  # puts "#{array_of_hashes}"
+  # puts nil
+  # puts "Length: #{array_of_hashes.length}"
+  return array_of_hashes
 
 end
-split_instruction_steps(test_array)
+#split_instruction_steps(test_array)
 
 
 

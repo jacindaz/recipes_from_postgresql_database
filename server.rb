@@ -6,6 +6,8 @@ require 'net/http'
 require 'uri'
 require 'pg'
 
+require_relative "test.rb"
+
 
 #METHODS---------------------------------------------------------------------------------
 def db_connection
@@ -77,6 +79,7 @@ get '/recipes/:id' do
 
   #clean up instructions into a list--------------------------------------------------
   @instructions_array = cleaned_up(@instructions)
+  @instructions_cleaned_up = split_instruction_steps(@instructions)
 
 
   @title = "#{@description_instructions[0]["recipe"]} Recipe"

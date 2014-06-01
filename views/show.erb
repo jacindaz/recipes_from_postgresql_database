@@ -13,8 +13,13 @@
 <h3>Instructions</h3>
 
 <% @instructions_cleaned_up.each do |hash| %>
-  <%= hash %>
-  <br><br>
+<ul>
+  <% hash.each do |key,value| %>
+    <li>
+      <strong><%= key %></strong>. <%= value %>
+    </li>
+  <% end %>
+</ul>
 <% end %>
 
 

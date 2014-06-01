@@ -9,13 +9,34 @@ def extract_step_one(string)
   #new_string = new_string[1]
   #binding.pry
   remove_trailing_spaces = new_string.strip
+  add_back_number = "1 #{remove_trailing_spaces}"
   return remove_trailing_spaces
 end
 #extract_step_one("Method\n\t\t\t\t\t\t\t\t\t\t1 Before starting on the pork, put the pork roast in the freezer for 30 minutes to make it easier to cut")
 
 
+def strip_until_num(string)
+  while string[0].to_i == 0
+    string = string[1..-1]
+  end
+  puts "#{string}"
+  return string
+end
+#strip_until_num("\n\t\t\t\t\t\t\t\t\t\tMethod\n\t\t\t\t\t\t\t\t\t\t1 Cream the butter and the sugar together until light and fluffy")
+#strip_until_num("  Brush with half of the glaze and cook for 5 minutes longer")
 
 
+def strip_array_until_num(array)
+  stripped_array = []
+  array.each do |sentence|
+
+    stripped_sentence = strip_until_num(sentence)
+    stripped_array << stripped_sentence
+  end
+  puts "#{stripped_array}"
+  return stripped_array
+end
+#strip_array_until_num(test_array)
 
 def split_instruction_steps(array)
 
@@ -24,6 +45,7 @@ def split_instruction_steps(array)
   end
 
   new_array = array
+
   #strips 1st sentence to remove word "Method"
   #first_sentence = extract_step_one(new_array[0])
   #new_array[0] = first_sentence

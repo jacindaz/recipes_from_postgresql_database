@@ -17,19 +17,19 @@ def db_connection
   end
 end
 
-def split_value(hash, target_key)
+def split_value(hash, target_key, split_by)
   array = []
   hash.each do |key, value|
     if key == target_key
-      array = value.split(". ")
+      array = value.split(split_by)
     end
   end
+  #puts "#{array}"
   return array
 end
 
 def cleaned_up(array)
   remove_method_word = array[0].split("1")
-  #binding.pry
   stripped = remove_method_word[1].strip
   new_array = array
   new_array[0] = stripped
@@ -72,7 +72,7 @@ get '/recipes/:id' do
   @ingredients = db_connection do |conn|
                   conn.exec_params(ingredients_query, [@id])
                 end
-  @instructions = split_value(@description_instructions[0], "instructions")
+  @instructions = split_value(@description_instructions[0], "instructions", ".")
 
 
   #clean up instructions into a list--------------------------------------------------

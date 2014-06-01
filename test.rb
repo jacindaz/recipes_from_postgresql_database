@@ -13,6 +13,8 @@ end
 
 
 
+
+
 def split_instruction_steps(array)
 
   array.each do |sentence|
@@ -24,7 +26,23 @@ def split_instruction_steps(array)
   first_sentence = extract_step_one(new_array[0])
   new_array[0] = first_sentence
 
-  puts "#{new_array}"
+  array_of_arrays = []
+  nested_array = []
+  new_array.each do |sentence|
+    if sentence[0].to_i == 0
+      nested_array << sentence
+    else
+      array_of_arrays << nested_array
+      nested_array = []
+      nested_array << sentence
+
+      #binding.pry
+    end
+  end
+
+  puts "#{array_of_arrays}"
+  puts nil
+  puts "Length: #{array_of_arrays.length}"
 
 end
 split_instruction_steps(test_array)

@@ -27,6 +27,16 @@ def split_value(hash, target_key)
   return array
 end
 
+def cleaned_up(array)
+  remove_method_word = array[0].split("1")
+  #binding.pry
+  stripped = remove_method_word[1].strip
+  new_array = array
+  new_array[0] = stripped
+  return new_array
+end
+
+
 #ROUTES---------------------------------------------------------------------------------
 get '/recipes' do
   @title = "Find your favorite recipe!"
@@ -35,7 +45,7 @@ get '/recipes' do
   #pulling in data from recipes database------------------------------------------------
   recipe_query = "SELECT name AS recipe, id, instructions, description
                   FROM recipes ORDER BY recipes.name
-                  LIMIT 10"
+                  LIMIT 20"
   @recipes = db_connection do |conn|
                 conn.exec(recipe_query)
               end
@@ -63,6 +73,10 @@ get '/recipes/:id' do
                   conn.exec_params(ingredients_query, [@id])
                 end
   @instructions = split_value(@description_instructions[0], "instructions")
+
+
+  #clean up instructions into a list--------------------------------------------------
+  @instructions_array = cleaned_up(@instructions)
 
 
   @title = "#{@description_instructions[0]["recipe"]} Recipe"

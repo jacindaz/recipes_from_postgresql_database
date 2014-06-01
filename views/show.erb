@@ -10,11 +10,19 @@
   <% end %>
 
   <h3><%= key.capitalize %></h3>
-  <p><%= value %></p>
+    <% if key == "instructions" %>
+      <ul>
+          <% @instructions_array.each do |line| %>
+            <li><%= line %></li>
+          <% end %>
+      </ul>
+    <% else %>
+      <p><%= value %></p>
+    <% end %>
 <%end %>
 
 
-<%= @instructions %>
+
 
   </body>
 </html>

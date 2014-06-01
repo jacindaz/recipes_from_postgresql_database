@@ -58,14 +58,17 @@ def split_instruction_steps(array)
   new_array.each do |sentence|
     if sentence[0].to_i == 0  #if does not begin with a number, update hash
       current_hash_value = nested_hash[index.to_s]
-      new_hash_value = "#{current_hash_value}. #{sentence}"
+      new_hash_value = "#{current_hash_value} #{sentence}."
       nested_hash[index.to_s] = new_hash_value
     else  #if does begin with a number
+      if sentence[0].to_i != 0
+        sentence = sentence[2..-1]
+      end
       array_of_hashes << nested_hash
       nested_hash = {}
       index += 1
       current_hash_value = nested_hash[index.to_s]
-      new_hash_value = "#{current_hash_value}. #{sentence}."
+      new_hash_value = "#{current_hash_value} #{sentence}."
       nested_hash[index.to_s] = new_hash_value
       #binding.pry
     end
